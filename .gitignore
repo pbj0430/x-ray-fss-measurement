@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+
+# Local UI state
+.fss_ui_state.json
+
+# Generated reports and temporary verification images
+reports/
+
+# Build outputs
+build/
+dist/
+
+# Large measurement/raw data
+sample_data/
+*.raw
+*.bin
+
+# IDE/editor
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+.DS_Store
