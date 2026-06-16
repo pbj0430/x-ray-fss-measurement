@@ -13,6 +13,7 @@ env/
 
 # Generated reports and temporary verification images
 reports/
+source_code.zip
 
 # Build outputs
 build/

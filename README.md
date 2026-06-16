@@ -32,13 +32,31 @@ Batch mode for RAW files:
 python main.py --no-gui --horizontal "sample_data\FSS_width_lens 0kV.raw" --vertical "sample_data\FSS_length_lens 0kV.raw" --raw-width 3072 --raw-height 3072 --raw-dtype uint16 --output reports
 ```
 
+## Build Windows EXE
+
+To create a single-file Windows executable for users who do not run Python directly:
+
+```powershell
+.\build_exe.ps1
+```
+
+The generated file is:
+
+```text
+dist\FSS_Measurement.exe
+```
+
+Share `FSS_Measurement.exe` with the operator. The first launch can be slow because PyInstaller extracts the bundled application to a temporary folder. Generated reports are still written to the selected output folder.
+
+Build outputs under `build/` and `dist/` are ignored by Git. Rebuild the exe locally when the source changes.
+
 Use the **Select...** buttons in the GUI to load the horizontal and vertical slit images. The selector shows a preview panel, including RAW images, using the current RAW width, height, and dtype fields.
 
 Use **ROI...** or **Select on image** to open the image viewer and drag a rectangular ROI. Horizontal and vertical images keep separate ROI values, because their slit positions may differ. Leave an ROI blank to use automatic ROI detection during analysis.
 
 The preview and ROI viewer include a brightness slider. This changes only the displayed image for easier visual inspection; it does not modify the RAW data or affect the measurement calculation.
 
-The GUI remembers the last-used image paths, output folder, measurement parameters, RAW settings, ROI values, checkboxes, projection method, and image folder in `.fss_ui_state.json`. If this file does not exist, the built-in defaults are used. In the ROI viewer, `Fit` zoom follows the current window size when the window is resized.
+The GUI remembers the last-used image paths, output folder, measurement parameters, RAW settings, ROI values, checkboxes, projection method, and image folder. Source runs save this in `.fss_ui_state.json` beside `main.py`; the Windows exe saves it under `%APPDATA%\FSS_Measurement\.fss_ui_state.json`. If this file does not exist, the built-in defaults are used. In the ROI viewer, `Fit` zoom follows the current window size when the window is resized.
 
 ## Supported Images
 
@@ -67,7 +85,7 @@ The GUI starts with these defaults:
 - Threshold = `15%`
 - Effective pixel size at focal spot plane = `0.140 / 4 = 0.035 mm`
 
-After the first run or normal window close, the GUI restores the values saved in `.fss_ui_state.json`. Delete that file to return to the built-in defaults.
+After the first run or normal window close, the GUI restores the saved values. Delete the saved UI state file to return to the built-in defaults.
 
 Additional analysis inputs:
 

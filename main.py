@@ -24,7 +24,22 @@ from roi_viewer import ImagePickerDialog, RoiSelectionDialog
 from tilt_correction import detect_and_correct_tilt
 
 
-UI_STATE_PATH = Path(__file__).with_name(".fss_ui_state.json")
+APP_NAME = "FSS_Measurement"
+
+
+def _ui_state_path() -> Path:
+    if getattr(sys, "frozen", False):
+        if sys.platform.startswith("win"):
+            base = Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
+        elif sys.platform == "darwin":
+            base = Path.home() / "Library" / "Application Support"
+        else:
+            base = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
+        return base / APP_NAME / ".fss_ui_state.json"
+    return Path(__file__).with_name(".fss_ui_state.json")
+
+
+UI_STATE_PATH = _ui_state_path()
 
 
 @dataclass
@@ -555,6 +570,7 @@ def _load_ui_state() -> dict[str, str]:
 
 def _save_ui_state(state: dict[str, str]) -> None:
     try:
+        UI_STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
         with UI_STATE_PATH.open("w", encoding="utf-8") as f:
             json.dump(state, f, ensure_ascii=False, indent=2)
     except OSError:
